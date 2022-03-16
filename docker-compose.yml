@@ -1,0 +1,26 @@
+version: '3'
+services:
+   mongo:
+    container_name: BDCatastro
+    restart: always
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - './data/db:/data/db'
+      - './data/confidb:/data/confidb'
+   catastro-back:
+    container_name: catastro-server
+    build: ./backend
+    restart: always
+    ports:
+      - 4500:4500
+    environment:
+      - PORT=4500
+      - DATABASE=mongodb://mongo:27017/BDCatastro
+      - TOKEN_SECRET=1a2ffe36502bc61066c571867b7f458c
+      - NODE_ENV=desarrollo
+      - DNS_FRONT=http://localhost:3000
+    depends_on:
+      - mongo
+  

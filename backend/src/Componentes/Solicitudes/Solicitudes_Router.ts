@@ -10,6 +10,7 @@ class SolicitudesRouter {
     routes(){
         this.router.post('/agregar', solicitudController.agregar);
         this.router.get('/listar', solicitudController.listar);
+        this.router.post('/SOA',solicitudController.soapSJ)
     }
 }
 const solicitudRouter = new SolicitudesRouter();

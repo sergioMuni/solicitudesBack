@@ -3,6 +3,7 @@ import modeloSolicitudes from './Solicitudes_Model'
 import ISolicitudes from './Solicitudes_Interface';
 import responder from '../../Middlewares/responder';
 import {Estado, Rol} from '../../Config/enumeradores'
+import soaPeticion from './SOAPeticion';
 
 class SoliciudesController {
     public async agregar(req:Request, res:Response){
@@ -41,6 +42,29 @@ class SoliciudesController {
                     responder.error(req, res, '', 'No hay pedidos para listar', 204);
                   }
             })
+        }catch(error){
+            console.log(error);
+            responder.error(req, res);
+        }
+    }
+    public async soapSJ(req:Request, res:Response){
+        try{
+            const datosBody = req.body;
+            console.log(datosBody);
+            if (!datosBody) {
+                throw new Error('No se ingresaron datos');
+            }else{
+                const resultado = await soaPeticion(datosBody)
+                console.log("RESULTADO")
+                
+                if(resultado){
+                    console.log(resultado)
+                    responder.sucess(req, res, resultado.data, 'ok', 200);
+                }else{
+                    responder.error(req, res, '', 'false', 204);
+                }
+                  
+            }
         }catch(error){
             console.log(error);
             responder.error(req, res);
